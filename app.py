@@ -79,6 +79,22 @@ def message_text(event):
         from Resource.reply import SetMenuMessage_Object,send_flex
         flex= SetMenuMessage_Object(flex_data)
         send_flex(reply_token,flex,channel_access_token)
+    elif 'เช็คข่าวสาร' in text_frofmuser:
+      
+        # image = ImageSendMessage(original_content_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo',preview_image_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo')
+        # line_bot_api.reply_message(reply_token,messages=[text,image])
+        from flexMsg import news_setbubble 
+        from Resource.reply import SetMenuMessage_Object , send_flex
+        from Resource.newsAPI import get_cnn_news
+
+        data = get_cnn_news()
+        flex = news_setbubble(data['title'],data['description'],data['url'],data['image_url'])
+        
+        text = TextSendMessage(text='รายงานข่าวสารสำหรับ CNN ล่าสุด').as_json_dict()
+
+        msg = SetMenuMessage_Object([text,flex])
+
+        send_flex(reply_token,file_data = msg,bot_access_key = channel_access_token)
     else:
         text_list = [
             'วัยรุ่นไม่เข้าใจเลย','ฉันไม่เข้าใจที่คุณพูดค่ะ กรุณาลองใหม่อีกครั้งค่ะ','กรุณาลองพิมพ์ใหม่ได้ไหม'
@@ -95,7 +111,8 @@ def RegisRichmenu(event):
 
     button_1 = QuickReplyButton(action=MessageAction(label='เช็คราคา',text='เช็คราคา'))
     button_2 = QuickReplyButton(action=MessageAction(label='เช็คข่าวสาร',text='เช็คข่าวสาร'))
-    qbtn = QuickReply(items=[button_1,button_2])
+    button_3 = QuickReplyButton(action=CameraAction(label='เปิดกล้อง'))
+    qbtn = QuickReply(items=[button_1,button_2,button_3])
 
     text = TextSendMessage(text='สวัสดีคุณ {} ยินดีต้อนรับสู่บริการแชทบอก'.format(disname))
     text2 = TextSendMessage(text='กรุณาเลือกเมนูที่ท่านต้องการ',quick_reply = qbtn)
@@ -106,3 +123,4 @@ def RegisRichmenu(event):
 
 if __name__ == "__main__":
     app.run(port=200)
+# prachayalinechatbot.herokuapp.com/webhook
