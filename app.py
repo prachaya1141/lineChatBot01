@@ -97,23 +97,23 @@ def message_text(event):
 
         send_flex(reply_token,file_data = msg,bot_access_key = channel_access_token)
     else:
-        message = '' #ข้อความที่จะส่งกลับไปหา user
-        from dialogflow_uncle import detect_intent_texts
-        project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
-        message = detect_intent_texts(project_id=project_id,session_id=session_id,text=text_fromuser,language_code='th')
+        # message = '' #ข้อความที่จะส่งกลับไปหา user
+        # from dialogflow_uncle import detect_intent_texts
+        # project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+        # message = detect_intent_texts(project_id=project_id,session_id=session_id,text=text_fromuser,language_code='th')
         
-        text = []
-        user_data = None
+        # text = []
+        # user_data = None
 
-        for i in message['fulfillment_messages']:### เพิ่มจากในคลิบ
-            txt = TextSendMessage(text=i)### เพิ่มจากในคลิบ
-            text.append(txt)### เพิ่มจากในคลิบ
+        # for i in message['fulfillment_messages']:### เพิ่มจากในคลิบ
+        #     txt = TextSendMessage(text=i)### เพิ่มจากในคลิบ
+        #     text.append(txt)### เพิ่มจากในคลิบ
 
-        if message['action'] == 'Uncleregister.Uncleregister-custom.Uncleregister-courses-custom.Uncleregister-courses-where-custom.Uncleregister-courses-where-when-yes':
-            user_data = TextSendMessage(text=str(message['parameters']))### เพิ่มจากในคลิบ
-            text.append(user_data)### เพิ่มจากในคลิบ
+        # if message['action'] == 'Uncleregister.Uncleregister-custom.Uncleregister-courses-custom.Uncleregister-courses-where-custom.Uncleregister-courses-where-when-yes':
+        #     user_data = TextSendMessage(text=str(message['parameters']))### เพิ่มจากในคลิบ
+        #     text.append(user_data)### เพิ่มจากในคลิบ
        
-        
+        text = TextSendMessage(text="test")
        
         line_bot_api.reply_message(reply_token=reply_token,messages=text)
     # project_id uncletut01-hakkas
