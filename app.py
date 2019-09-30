@@ -48,8 +48,9 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     reply_token =  event.reply_token
-    text_frofmuser = event.message.text
-    text = TextSendMessage(text=text_frofmuser)
+    text_fromuser = event.message.text
+    session_id = event.source.user_id
+    text = TextSendMessage(text=text_fromuser)
    
    
     # text2 = TextSendMessage(text="test")
@@ -67,7 +68,7 @@ def message_text(event):
     # )
     # # line_bot_api.multicast(["U65c8c03c10487a69855fd591bd830ac1","U4dd62d9af204ed4fa2f0a3f58c47db19"],text)
     # line_bot_api.push_message("U65c8c03c10487a69855fd591bd830ac1",TextSendMessage(text='Hello World!'))
-    if 'เช็คราคา' in text_frofmuser:
+    if 'เช็คราคา' in text_fromuser:
         from Resource.bxAPI import GetBxPrice
         from random import randint
         from flexMsg import setCarousel,setbubble
@@ -79,7 +80,7 @@ def message_text(event):
         from Resource.reply import SetMenuMessage_Object,send_flex
         flex= SetMenuMessage_Object(flex_data)
         send_flex(reply_token,flex,channel_access_token)
-    elif 'เช็คข่าวสาร' in text_frofmuser:
+    elif 'เช็คข่าวสาร' in text_fromuser:
       
         # image = ImageSendMessage(original_content_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo',preview_image_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo')
         # line_bot_api.reply_message(reply_token,messages=[text,image])
@@ -96,14 +97,27 @@ def message_text(event):
 
         send_flex(reply_token,file_data = msg,bot_access_key = channel_access_token)
     else:
-        text_list = [
-            'วัยรุ่นไม่เข้าใจเลย','ฉันไม่เข้าใจที่คุณพูดค่ะ กรุณาลองใหม่อีกครั้งค่ะ','กรุณาลองพิมพ์ใหม่ได้ไหม'
-        ]
-        from random import choice
-        text_data = choice(text_list)
-        text = TextSendMessage(text=text_data)
-        line_bot_api.reply_message(reply_token,text)
-    
+        message = '' #ข้อความที่จะส่งกลับไปหา user
+        from dialogflow_uncle import detect_intent_texts
+        project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+        message = detect_intent_texts(project_id=project_id,session_id=session_id,text=text_fromuser,language_code='th')
+        
+        text = []
+        user_data = None
+
+        for i in message['fulfillment_messages']:### เพิ่มจากในคลิบ
+            txt = TextSendMessage(text=i)### เพิ่มจากในคลิบ
+            text.append(txt)### เพิ่มจากในคลิบ
+
+        if message['action'] == 'Uncleregister.Uncleregister-custom.Uncleregister-courses-custom.Uncleregister-courses-where-custom.Uncleregister-courses-where-when-yes':
+            user_data = TextSendMessage(text=str(message['parameters']))### เพิ่มจากในคลิบ
+            text.append(user_data)### เพิ่มจากในคลิบ
+       
+        
+       
+        line_bot_api.reply_message(reply_token=reply_token,messages=text)
+    # project_id uncletut01-hakkas
+
 @handler.add(FollowEvent)
 def RegisRichmenu(event):
     user_id = event.source.user_id
