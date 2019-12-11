@@ -321,3 +321,71 @@ def setCarousel(data):
     flexdata["contents"] = carousel_data
 
     return flexdata
+def test_setbubble():
+  flexdata = {
+  "type": "flex",
+  "altText": "Flex Message",
+  "contents": {
+    "type": "bubble",
+    "direction": "ltr",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "Please select",
+          "align": "center",
+          "weight": "bold"
+        }
+      ]
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://developers.line.biz/assets/images/services/bot-designer-icon.png",
+      "size": "lg",
+      "aspectRatio": "1.51:1",
+      "aspectMode": "fit"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "separator"
+        },
+        {
+          "type": "button",
+          "action": {
+            "type": "message",
+            "label": "Button1",
+            "text": "1"
+          }
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "type": "button",
+          "action": {
+            "type": "message",
+            "label": "Button2",
+            "text": "2"
+          }
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "type": "button",
+          "action": {
+            "type": "message",
+            "label": "Button3",
+            "text": "3"
+          }
+        }
+      ]
+    }
+  }
+}
+  return flexdata

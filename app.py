@@ -96,6 +96,23 @@ def message_text(event):
         msg = SetMenuMessage_Object([text,flex])
 
         send_flex(reply_token,file_data = msg,bot_access_key = channel_access_token)
+
+    elif 'เช็คเงื่อนไขพัสดุ' in text_fromuser:
+      
+        # image = ImageSendMessage(original_content_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo',preview_image_url='https://yt3.ggpht.com/a/AGF-l7-ROxk4wco8xCKXtbSltQpYTsAvqNkrkQv1nA=s900-c-k-c0xffffffff-no-rj-mo')
+        # line_bot_api.reply_message(reply_token,messages=[text,image])
+        from flexMsg import news_setbubble,test_setbubble 
+        from Resource.reply import SetMenuMessage_Object , send_flex
+        from Resource.newsAPI import get_cnn_news
+
+        data = get_cnn_news()
+        flex = test_setbubble()
+        
+        # text = TextSendMessage(text='รายงานข่าวสารสำหรับ CNN ล่าสุด').as_json_dict()
+
+        msg = SetMenuMessage_Object([flex])
+
+        send_flex(reply_token,file_data = msg,bot_access_key = channel_access_token)
     else:
         message = '' #ข้อความที่จะส่งกลับไปหา user
         from dialogflow_uncle import detect_intent_texts
