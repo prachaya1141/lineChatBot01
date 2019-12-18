@@ -12,7 +12,10 @@ def detect_intent_texts(project_id, session_id, text, language_code):
             session=session, query_input=query_input)
         data = {}
         data['fulfillment_text'] = response.query_result.fulfillment_text
-        data['parameters'] = response.query_result.parameters
+        from google.protobuf.json_format import MessageToDict
+     
+        data['parameters'] = MessageToDict(response.query_result.parameters)
+        # data['parameters'] = response.query_result.parameters
         data['fulfillment_messages'] = [str(i.text.text[0]) for i in response.query_result.fulfillment_messages]
         data['action'] = response.query_result.action
         return data
@@ -20,11 +23,14 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 # if __name__ == "__main__":
 #     ### enable google dialogflow api
 #     ### firstly set GOOGLE_APPLICATION_CREDENTIALS=Credentials.json
+
+    ## os.environ['DIALOGFLOW_PROJECT_ID'] = 'uncletut01-eqapks'
+    ## os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'Credentials.json'
 #     i = 0
 #     while(i<5):
 #         message = input('please input some text :')
 #         project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
 #         res = detect_intent_texts(project_id, "1234", message, 'th')
 
-#         print(res['action'])
+#         print(res)
 #         i += 1
